@@ -1,0 +1,48 @@
+ds() {
+  if [ -f "./tmp/pids/unicorn.pid" ]
+  then
+    kill `cat ./tmp/pids/unicorn.pid`
+    echo "Server is brought to down"
+  elif [ -f "./tmp/pids/puma.pid" ] || [ -f "./tmp/pids/puma.state" ]
+  then
+    # kill `cat ./tmp/pids/puma.pid`
+    kill `cat ./tmp/pids/puma.state | grep pid: | sed 's/pid: //g'`
+    echo "Server is brought to down"
+  else
+    echo "Server is not up"
+  fi
+}
+
+us() {
+  echo "Server is called to wake up"
+
+  current_directory=`pwd | sed 's!.*/!!'`
+  case $current_directory in
+    amoeba.cam)
+      root=cam
+      ;;
+    amoeba.ws)
+      root=ws
+      ;;
+    igshk)
+      root=ail_rails
+      ;;
+    *)
+      root=$current_directory
+  esac
+
+  if [ -f "./config/unicorn.rb" ]
+  then
+    RAILS_RELATIVE_URL_ROOT=/$root RAILS_ENV=development bundle exec unicorn -c `pwd`/config/unicorn.rb -D $*
+  elif [ -f "./config/puma.rb" ]
+  then
+    RAILS_RELATIVE_URL_ROOT=/$root bundle exec puma -e development -C `pwd`/config/puma.rb $*
+  fi
+
+  if [ -f "./tmp/pids/unicorn.pid" ] || [ -f "./tmp/pids/puma.pid" ]
+  then
+    echo "Server is brought to up"
+  fi
+}
+
+alias rs="ds && us"

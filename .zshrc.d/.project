@@ -1,0 +1,13 @@
+fpath=($HOME/projects/dotfiles/.zshrc.d/.project $fpath)
+autoload -U compinit && compinit
+
+p() {
+  if [ -z "$1" ]
+  then
+    cd $HOME/projects
+  else
+    cd $HOME/projects/$1
+  fi
+}
+_p() { _files -W $HOME/projects -/; }
+compdef _p p
