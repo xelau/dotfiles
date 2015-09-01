@@ -1,0 +1,6 @@
+alias bb="cd ~/projects/bluesky/bluesky"
+alias bp="cd ~/projects/bluesky/bluesky-processor"
+alias bs="cd ~/projects/bluesky/bluesky-scheduler"
+
+alias start_processor="pm2 start ~/projects/bluesky/bluesky-processor/worker.js -i 1 --name 'processor'"
+alias start_scheduler="pm2 start ~/projects/bluesky/bluesky-scheduler/app.js -i 1 --name 'scheduler'"
