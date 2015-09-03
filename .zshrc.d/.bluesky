@@ -2,5 +2,18 @@ alias bb="cd ~/projects/bluesky/bluesky"
 alias bp="cd ~/projects/bluesky/bluesky-processor"
 alias bs="cd ~/projects/bluesky/bluesky-scheduler"
 
+alias start_dashboard="chruby-exec 2.1.3 -- pumactl -F ~/projects/bluesky/bluesky/config/puma.rb start"
+alias stop_dashboard="chruby-exec 2.1.3 -- pumactl -F ~/projects/bluesky/bluesky/config/puma.rb stop"
+alias restart_dashboard="stop_dashboard && start_dashboard"
+
 alias start_processor="pm2 start ~/projects/bluesky/bluesky-processor/worker.js -i 1 --name 'processor'"
+alias stop_processor="pm2 stop processor"
+alias restart_processor="stop_processor && pm2 start processor"
+
 alias start_scheduler="pm2 start ~/projects/bluesky/bluesky-scheduler/app.js -i 1 --name 'scheduler'"
+alias stop_scheduler="pm2 stop scheduler"
+alias restart_scheduler="stop_scheduler && pm2 start scheduler"
+
+alias start_bluesky="start_dashboard && start_processor && start_scheduler"
+alias stop_bluesky="stop_dashboard && stop_processor && stop_scheduler"
+alias restart_bluesky="restart_dashboard && restart_processor && restart_scheduler"
